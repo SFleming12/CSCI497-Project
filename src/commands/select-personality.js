@@ -1,74 +1,45 @@
-const {
-  StringSelectMenuBuilder,
-  StringSelectMenuOptionBuilder,
-  ActionRowBuilder,
-  ComponentType,
-} = require("discord.js");
+const { StringSelectMenuBuilder, StringSelectMenuOptionBuilder, ActionRowBuilder } = require("discord.js");
 
 const data = {
   name: "select-personality",
-  description: "Show personalities using string select menu",
+  description: "Choose the chatbot's personality using a select menu",
 };
-
-/**
- * @param {Object} param0
- * @param {import('discord.js').ChatInputCommandInteraction} param0.interaction
- */
 
 async function run({ interaction }) {
   const personalities = [
-    {
-      label: "Nice",
-      description: "This is a nice chatbot!",
-      value: "nice",
-    },
-    {
-      label: "Sarcastic",
-      description: "This is a sarcastic chatbot!",
-      value: "sarcastic",
-    },
-    {
-      label: "Funny",
-      description: "This is a funny chatbot!",
-      value: "funny",
-    },
+    { label: "Nice", description: "This is a nice chatbot!", value: "nice" },
+    { label: "Kind", description: "A compassionate chatbot eager to help.", value: "kind" },
+    { label: "Witty", description: "A chatbot with clever jokes and humor.", value: "witty" },
+    { label: "Charismatic", description: "A charming chatbot with magnetic energy.", value: "charismatic" },
+    { label: "Optimistic", description: "A positive chatbot who sees the bright side.", value: "optimistic" },
+
+
+    { label: "Sarcastic", description: "A chatbot with dry, playful sarcasm.", value: "sarcastic" },
+    { label: "Reserved", description: "A quiet chatbot, introspective and calm.", value: "reserved" },
+    { label: "Blunt", description: "A direct and straightforward chatbot.", value: "blunt" },
+    { label: "Stoic", description: "An  emotionally controlled chatbot, composed and calm.", value: "stoic" },
+
+    { label: "Arrogant", description: "A chatbot who believes it's superior to others.", value: "arrogant" },
+    { label: "Pessimistic", description: "A chatbot who expects the worst in everything", value: "pessimistic" },
+    { label: "Manipulative", description: "A chatbot who subtly influences others for gain", value: "manipulative" },
+    { label: "Impulsive", description: "A chatbot who acts quickly without thinking", value: "impulsive" },
+
+    { label: "Funny", description: "This is a funny chatbot!", value: "funny" },
   ];
 
   const selectMenu = new StringSelectMenuBuilder()
-    .setCustomId(interaction.id)
-    .setPlaceholder("Make a selection...")
-    .setMinValues(0)
+    .setCustomId(`select-personality-${interaction.id}`)
+    .setPlaceholder("Choose a chatbot personality...")
     .setMaxValues(1)
     .addOptions(
-      personalities.map((personalities) =>
-        new StringSelectMenuOptionBuilder()
-          .setLabel(personalities.label)
-          .setDescription(personalities.description)
-          .setValue(personalities.value)
+      personalities.map((p) =>
+        new StringSelectMenuOptionBuilder().setLabel(p.label).setDescription(p.description).setValue(p.value)
       )
     );
 
   const actionRow = new ActionRowBuilder().addComponents(selectMenu);
 
-  const reply = await interaction.reply({
-    components: [actionRow],
-  });
-
-  const collector = reply.createMessageComponentCollector({
-    componentType: ComponentType.StringSelect,
-    filter: (i) =>
-      i.user.id === interaction.user.id && i.customId === interaction.id,
-    time: 60_000,
-  });
-
-  collector.on("collect", (interaction) => {
-    if (!interaction.values.length) {
-      interaction.reply("You have emptied your selection.");
-      return;
-    }
-
-    interaction.reply(`You have now selected: ${interaction.values.join(",")}`);
-  });
+  await interaction.reply({ components: [actionRow], ephemeral: true });
 }
 
 module.exports = { data, run };
