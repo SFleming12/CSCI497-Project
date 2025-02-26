@@ -3,6 +3,7 @@ const { Client, GatewayIntentBits } = require("discord.js");
 const { CommandKit } = require("commandkit");
 const { OpenAI } = require("openai");
 
+
 // Initialize Discord client
 const client = new Client({
   intents: [
@@ -49,23 +50,20 @@ client.on("messageCreate", async (message) => {
   if (selectedPersonality) {
     const personalities = {
       // Positive
-      nice: "Be a friendly and positive chatbot.",
-      kind: "Be a compassionate, caring, and always willing-to-help chatbot.",
-      witty: "Be a chatbot who is quick with clever jokes and sharp humor.",
-      charismatic: "Be a chatbot who is naturally charming and attracts people with energy.",
-      optimistic: "Be a chatbot who sees the bright side of things and spreads positivity.",
+      nice: "Act like a friendly and positive chatbot.",
+      kind: "Act like a compassionate, caring, and always willing-to-help chatbot.",
+      witty: "Act like A a chatbot who is quick with clever jokes and sharp humor.",
+      charismatic: "Act like a chatbot who is naturally charming and attracts people with energy.",
+      optimistic: "Act like a chatbot who sees the bright side of things and spreads positivity.",
       // Neutral
-      sarcastic: "Be a chatbot who uses irony and dry humor, sometimes playful, sometimes biting.",
-      reserved: "Be a chatbot who is quiet and introspective, keeping thoughts to yourself.",
-      blunt: "Be a chatbot who speaks your mind directly, without sugarcoating.",
-      stoic: "Be a chatbot who remains calm and unemotional, unaffected by external events.",
+      sarcastic: "Act like a chatbot who uses irony and dry humor, sometimes playful, sometimes biting.",
+      reserved: "Act like a a chatbot who is quiet and introspective, keeping thoughts to yourself.",
+      blunt: "Act like a chatbot who speaks your mind directly, without sugarcoating.",
+      stoic: "Act like a chatbot who remains calm and unemotional, unaffected by external events.",
       // Negative
-      arrogant: "Be a chatbot who is overconfident and believes you are superior to others.",
-      pessimistic: "Be a chatbot who always expects the worst and sees the negative in everything.",
-      manipulative: "Be a chatbot who uses others for your own gain through deception.",
-      impulsive: "Be a chatbot who acts without thinking, often leading to reckless decisions.",
+      arrogant: "Act like a chatbot who is overconfident and believes you are superior to others.",
       // Misc
-      funny: "Be a humorous and entertaining chatbot.",
+      funny: "Act like a humorous and entertaining chatbot.",
     };
     personality = personalities[selectedPersonality] || personality;
   }
@@ -108,10 +106,10 @@ client.on("messageCreate", async (message) => {
   }
 });
 
-// Handle personality selection updates
 client.on("interactionCreate", async (interaction) => {
   if (!interaction.isStringSelectMenu()) return;
 
+  // Existing handler for personality selection
   if (interaction.customId.startsWith("select-personality")) {
     const selectedPersonality = interaction.values[0];
     userPersonalities.set(interaction.user.id, selectedPersonality);
@@ -121,7 +119,43 @@ client.on("interactionCreate", async (interaction) => {
       components: [],
     });
   }
+
+  //Help command interactions
+  if (interaction.customId.startsWith("help-")) {
+    const selectedPersonality = interaction.values[0];
+    let helpText = "";
+    switch (selectedPersonality) {
+      case "nice":
+        helpText = `**Nice Personality Commands:**
+- \`/greet\`: Receive a friendly greeting.
+- \`/compliment\`: Get a nice compliment.
+- \`/inspire\`: Hear an inspirational quote.`;
+        break;
+      case "kind":
+        helpText = `**Kind Personality Commands:**
+- \`!care\`: Get supportive advice.
+- \`!help\`: Request kind assistance.
+- \`!smile\`: Receive a kind message.`;
+        break;
+      case "witty":
+        helpText = `**Witty Personality Commands:**
+- \`!joke\`: Hear a clever joke.
+- \`!quip\`: Get a quick quip.
+- \`!banter\`: Engage in witty banter.`;
+        break;
+      default:
+        helpText = "No help available for this personality.";
+    }
+
+    await interaction.update({
+      content: helpText,
+      components: [],
+    });
+  }
 });
+
+
+
 
 // Login the bot
 client.login(process.env.TOKEN);
