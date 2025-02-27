@@ -1,5 +1,5 @@
 require("dotenv/config");
-const { Client, GatewayIntentBits } = require("discord.js");
+const { Client, GatewayIntentBits, ClientUser } = require("discord.js");
 const { CommandKit } = require("commandkit");
 const { OpenAI } = require("openai");
 
@@ -21,6 +21,7 @@ const openai = new OpenAI({
 
 // Store user-selected personalities
 const userPersonalities = new Map();
+
 
 // Load CommandKit (automatically picks up commands/select-personality.js)
 new CommandKit({
@@ -44,6 +45,7 @@ client.on("messageCreate", async (message) => {
 
   // Default chatbot personality
   let personality = "Be a helpful chatbot.";
+  client.user.setAvatar("SageGradient.png") 
 
   // Check if user has selected a personality
   const selectedPersonality = userPersonalities.get(message.author.id);
@@ -66,7 +68,22 @@ client.on("messageCreate", async (message) => {
       funny: "Act like a humorous and entertaining chatbot.",
     };
     personality = personalities[selectedPersonality] || personality;
-  }
+    if(personality == personalities.nice || personality == personalities.kind || personality == personalities.witty || personality == personalities.charismatic ||personality == personalities.optimistic || personalities.funny)
+      {
+        client.user.setAvatar("SagePositive.png")
+
+      }
+    if(personality == personalities.sarcastic || personality == personalities.reserved || personality == personalities.blunt || personality == personalities.stoic)
+      {
+          client.user.setAvatar("SageNeutral.png")
+  
+      }
+    if(personality == personalities.arrogant)
+      {
+            client.user.setAvatar("SageNegative.png") 
+      }
+    }
+
 
   // Typing indicator
   await message.channel.sendTyping();
