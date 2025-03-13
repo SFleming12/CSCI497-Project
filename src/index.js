@@ -3,7 +3,6 @@ const { Client, GatewayIntentBits, ClientUser } = require("discord.js");
 const { CommandKit } = require("commandkit");
 const { OpenAI } = require("openai");
 
-
 // Initialize Discord client
 const client = new Client({
   intents: [
@@ -21,7 +20,7 @@ const openai = new OpenAI({
 
 // Store user-selected personalities
 const userPersonalities = new Map();
-
+global.userPersonalities = userPersonalities;
 
 // Load CommandKit (automatically picks up commands/select-personality.js)
 new CommandKit({
@@ -32,8 +31,20 @@ new CommandKit({
 });
 
 // Log when the bot is online
-client.on("ready", () => {
+client.on("ready", async () => {
   console.log(`${client.user.tag} is online.`);
+  
+
+  try {
+    const currentAvatarURL = client.user.displayAvatarURL({ format: "png", size: 1024 }).split("?")[0];
+    
+    if (!currentAvatarURL.includes("SageGradient.png")) {
+      await client.user.setAvatar("SageGradient.png");
+      console.log("Default avatar set.");
+    }
+  } catch (error) {
+    console.error("Error setting default avatar:", error);
+  }
 });
 
 // Handle chatbot responses with conversation history
@@ -45,45 +56,60 @@ client.on("messageCreate", async (message) => {
 
   // Default chatbot personality
   let personality = "Be a helpful chatbot.";
-  client.user.setAvatar("SageGradient.png") 
-
-  // Check if user has selected a personality
   const selectedPersonality = userPersonalities.get(message.author.id);
+
   if (selectedPersonality) {
     const personalities = {
-      // Positive
       nice: "Act like a friendly and positive chatbot.",
       kind: "Act like a compassionate, caring, and always willing-to-help chatbot.",
-      witty: "Act like A a chatbot who is quick with clever jokes and sharp humor.",
+      witty: "Act like a chatbot who is quick with clever jokes and sharp humor.",
       charismatic: "Act like a chatbot who is naturally charming and attracts people with energy.",
       optimistic: "Act like a chatbot who sees the bright side of things and spreads positivity.",
-      // Neutral
       sarcastic: "Act like a chatbot who uses irony and dry humor, sometimes playful, sometimes biting.",
-      reserved: "Act like a a chatbot who is quiet and introspective, keeping thoughts to yourself.",
+      reserved: "Act like a chatbot who is quiet and introspective, keeping thoughts to yourself.",
       blunt: "Act like a chatbot who speaks your mind directly, without sugarcoating.",
       stoic: "Act like a chatbot who remains calm and unemotional, unaffected by external events.",
-      // Negative
       arrogant: "Act like a chatbot who is overconfident and believes you are superior to others.",
-      // Misc
       funny: "Act like a humorous and entertaining chatbot.",
     };
     personality = personalities[selectedPersonality] || personality;
-    if(personality == personalities.nice || personality == personalities.kind || personality == personalities.witty || personality == personalities.charismatic ||personality == personalities.optimistic || personalities.funny)
-      {
-        client.user.setAvatar("SagePositive.png")
 
-      }
-    if(personality == personalities.sarcastic || personality == personalities.reserved || personality == personalities.blunt || personality == personalities.stoic)
-      {
-          client.user.setAvatar("SageNeutral.png")
-  
-      }
-    if(personality == personalities.arrogant)
-      {
-            client.user.setAvatar("SageNegative.png") 
-      }
+    let newAvatar = "";
+    if (
+      personality === personalities.nice ||
+      personality === personalities.kind ||
+      personality === personalities.witty ||
+      personality === personalities.charismatic ||
+      personality === personalities.optimistic ||
+      personality === personalities.funny
+    ) {
+      newAvatar = "SagePositive.png";
+    } else if (
+      personality === personalities.sarcastic ||
+      personality === personalities.reserved ||
+      personality === personalities.blunt ||
+      personality === personalities.stoic
+    ) {
+      newAvatar = "SageNeutral.png";
+    } else if (personality === personalities.arrogant) {
+      newAvatar = "SageNegative.png";
     }
 
+    if (newAvatar) {
+      try {
+        const currentAvatarURL = client.user.displayAvatarURL({ format: "png", size: 1024 }).split("?")[0];
+
+        if (!currentAvatarURL.includes(newAvatar)) {
+          await client.user.setAvatar(newAvatar);
+          console.log("Avatar updated successfully.");
+        } else {
+          console.log("Avatar is already correct. No update needed.");
+        }
+      } catch (error) {
+        console.error("Error changing avatar:", error);
+      }
+    }
+  }
 
   // Typing indicator
   await message.channel.sendTyping();
@@ -95,11 +121,11 @@ client.on("messageCreate", async (message) => {
     prevMessages = Array.from(prevMessages.values()).reverse(); // Oldest first
 
     let conversation = [{ role: "system", content: personality }];
-
+    console.log(personality);
     prevMessages.forEach((msg) => {
       if (msg.author.bot && msg.author.id !== client.user.id) return;
       if (msg.content.startsWith(IGNORE_PREFIX)) return;
-      
+
       conversation.push({
         role: msg.author.id === client.user.id ? "assistant" : "user",
         content: msg.content,
@@ -137,28 +163,17 @@ client.on("interactionCreate", async (interaction) => {
     });
   }
 
-  //Help command interactions
+  // Help command interactions
   if (interaction.customId.startsWith("help-")) {
     const selectedPersonality = interaction.values[0];
     let helpText = "";
     switch (selectedPersonality) {
-      case "nice":
-        helpText = `**Nice Personality Commands:**
-- \`/greet\`: Receive a friendly greeting.
-- \`/compliment\`: Get a nice compliment.
-- \`/inspire\`: Hear an inspirational quote.`;
-        break;
-      case "kind":
-        helpText = `**Kind Personality Commands:**
-- \`!care\`: Get supportive advice.
-- \`!help\`: Request kind assistance.
-- \`!smile\`: Receive a kind message.`;
-        break;
       case "witty":
         helpText = `**Witty Personality Commands:**
-- \`!joke\`: Hear a clever joke.
-- \`!quip\`: Get a quick quip.
-- \`!banter\`: Engage in witty banter.`;
+- \`/roast\`: Hear a clever roast of the user's name
+- \`/8ball \`: Receive a 8ball answer
+- \`/fortune \`: User receives a witty fortune
+- \`/bants\`: Recieve a banter response to a message!`;
         break;
       default:
         helpText = "No help available for this personality.";
@@ -170,9 +185,6 @@ client.on("interactionCreate", async (interaction) => {
     });
   }
 });
-
-
-
 
 // Login the bot
 client.login(process.env.TOKEN);
