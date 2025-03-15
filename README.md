@@ -33,7 +33,7 @@
 <h3>Nice</h3>
     <ul>
         <li><code>/set-birthday</code> Allows the user to set their birthday and it automatically sends an announcement to the server on that day with a birthday message</li>
-        <li><code>edit-birthday</code> Allows the user to edit their set birthday in the server</li>
+        <li><code>/edit-birthday</code> Allows the user to edit their set birthday in the server</li>
         <li><code>/display-birthday</code> Allows the user to display their currently set birthday in the chat</li>
         <li><code>/remove-birthday</code> Allows the user to remove their currently set brithday from the server</li>
         <li><code>/tell-dad-joke</code> Allows the user to request the bot to tell them a dad joke</li>
