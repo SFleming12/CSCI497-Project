@@ -1,7 +1,7 @@
 <div align="center">
 <h1>Project Zenith</h1>
 
-<img src="SageGradient.png" alt="Sage Original Icon" width="300">
+<img src="src/SageGradient.png" alt="Sage Original Icon" width="300">
 
 <div align="left">
 <h2>Team Members</h2>
