@@ -49,5 +49,5 @@
 <h3>Stoic</h3>
     <ul>
         <li><code>/philosophy</code> Allows the user to request a random philosophical quote</li>
-        <li><code>/obstacle </code> Allows the user to share an obstacle they are facing and receive philosophical advice on solving it </li>
+        <li><code>/obstacle</code> Allows the user to share an obstacle they are facing and receive philosophical advice on solving it </li>
     </ul>
