@@ -17,6 +17,13 @@
 <h3>Open to Any Personality</h3>
     <ul>
         <li><code>/help</code> List out all the possible commands for the currently selected personality</li>
+        <li><code>/set-level</code> Allows a Server Admin to set an user's level</li>
+        <li><code>/reset-level</code> Allows a Server Admin to reset a user's level and XP to 1</li>
+        <li><code>/level</code> Allows the user to check their current level</li>
+    </ul>
+<h3>Locked to Level 3 Users Only<h3>
+    <ul>
+        <li><code>/ping</code> Allow the user to check their current ping</li>
     </ul>
 <h3>Study Partner</h3>
     <ul>
@@ -41,10 +48,6 @@
     </ul>
 <h3>Stoic</h3>
     <ul>
-        <li><code>/set-level</code> Allows a Server Admin to set an user's level</li>
-        <li><code>/reset-level</code> Allows a Server Admin to reset an user's level and XP to 1</li>
-        <li><code>/level</code> Allows the user to check their current level</li>
-        <li><code>/ping</code> Allows the user to check their ping</li>
         <li><code>/philosophy</code> Allows the user to request a random philosophical quote</li>
         <li><code>/obstacle </code> Allows the user to share an obstacle they are facing and receive philosophical advice on solving it </li>
     </ul>
