@@ -22,9 +22,9 @@
         <li><code>/level</code> Allows the user to check their current level</li>
     </ul>
 <h3>Locked to Level 3 Users Only<h3>
-    <ul>
+ <ul>
         <li><code>/ping</code> Allow the user to check their current ping</li>
-    </ul>
+</ul>
 <h3>Study Partner</h3>
     <ul>
         <li><code>/hydrate</code> Allows the user to set hydration reminders</li>
