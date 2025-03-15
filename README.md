@@ -14,7 +14,7 @@
 
 <div align="left">
 <h2>Personalities & Commands</h2>
-<h3>Open to any personality</h3>
+<h3>Open to Any Personality</h3>
     <ul>
         <li><code>/help</code> List out all the possible commands for the currently selected personality</li>
     </ul>
