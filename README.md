@@ -27,7 +27,12 @@
 </ul>
 <h3>Study Partner</h3>
     <ul>
-        <li><code>/hydrate</code> Allows the user to set hydration reminders</li>
+        <li><code>/hydrate start </code> Allows the user to set hydration reminders</li>
+        <li><code>/hydrate stop </code> Allows the user to stop the set hydration reminders</li>
+        <li><code>/hydrate pause </code> Allows the user to pause the set hydration reminders</li>
+        <li><code>/hydrate resume </code> Allows the user to resume the previously paused hydration reminders</li>
+        <li><code>/hydrate drank </code> Allows the user to log their hydration</li>
+        <li><code>/hydrate show </code> Allows the user to display the set hydration reminders & the logged hydration</li>
         <li><code>/pomodoro</code> Allows the user to set a pomodoro timer</li>
     </ul>
 <h3>Witty</h3>
