@@ -16,8 +16,7 @@
 <h2>Personalities & Commands</h2>
 <h3>Open to Any Personality</h3>
     <ul>
-        <li><code>help</code> List out all the possible commands for the currently selected personality</li>
-        <li><code>help menu</code> List out all the possible commands for the currently selected personality</li>
+        <li><code>help</code> or <code>help menu</code> List out all the possible commands</li>
         <li><code>/set-level</code> Allows a Server Admin to set an user's level</li>
         <li><code>/reset-level</code> Allows a Server Admin to reset a user's level and XP to 1</li>
         <li><code>/level</code> Allows the user to check their current level</li>
